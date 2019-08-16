@@ -1,0 +1,47 @@
+{% extends "entrance/base.html" %}
+{%block title%}Blog-home{%endblock%}
+
+{% block content %}
+<h1 class="mb-3">Posts by {{view.kwargs.username}}({{page_obj.paginator.count}})</h1>
+    {% for post in posts %}
+        <article class="media content-section my-4 py-3">
+          <img class = 'rounded-circle'
+               style="height: 65px;  width: 65px;  margin-right: 16px;"
+               src="{{ post.author.profile.image.url }}">
+
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{%url 'user-posts' post.author.username%}">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title" href="post/{{post.id}}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+          </div>
+
+        </article>
+        <hr/>
+    {% endfor %}
+    <div >
+    
+      {%if page_obj.has_previous%}
+
+      <a class="btn btn-outline-info " href="?page=1">&laquo;First page</a>
+      <a class="btn btn-outline-info " href="?page={{ page_obj.previous_page_number }}">Previous</a>
+
+      {%endif%}
+
+
+      <span style="color: blue " class="current bg-info ">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+     
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info ml-1" href="?page={{ page_obj.next_page_number }}">next</a>
+            <a class="btn btn-outline-info " href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+
+    
+  </div>
+
+{% endblock content %}
